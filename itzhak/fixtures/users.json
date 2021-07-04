@@ -1,0 +1,35 @@
+[
+  {
+    "model": "itzhak.user",
+    "pk": 1,
+    "fields": {
+      "password": "wv]`E]~gU^5W%B8",
+      "email": "douglas@itzhak.com",
+      "first_name": "douglas",
+      "last_name": "sidious",
+      "balance": 20000
+    }
+  },
+  {
+    "model": "itzhak.user",
+    "pk": 2,
+    "fields": {
+      "password": "bp(B7#*RQGVd5s",
+      "email": "vic@itzhak.com",
+      "first_name": "vic",
+      "last_name": "sidious",
+      "balance": 20000
+    }
+  },
+  {
+    "model": "itzhak.user",
+    "pk": 3,
+    "fields": {
+      "password": "2f,K$:._9Bv,dM$R",
+      "email": "frank@zappa.com",
+      "first_name": "frank",
+      "last_name": "zappa",
+      "balance": 20000
+    }
+  }
+]

@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     "django_extensions",
     "environ",
     "graphene_django",
-    "itzhak"
+    "pytest",
+    "itzhak",
 ]
 
 MIDDLEWARE = [

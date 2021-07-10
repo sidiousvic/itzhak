@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import base_user
 
 
-class User(base_user.AbstractBaseUser):
+class UserModel(base_user.AbstractBaseUser):
     """
     A user of Itzhak. A user can perform CRUD actions around expenses,
     profile, and budgets.

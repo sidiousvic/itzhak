@@ -1,19 +1,19 @@
 from graphene_django import DjangoObjectType
 import graphene
 
-from itzhak.data.models.user import UserModel
+from itzhak.data.models.user import User
 
 
-class User(DjangoObjectType):
+class UserType(DjangoObjectType):
     class Meta:
-        model = UserModel
+        model = User
 
 
 class Query(graphene.ObjectType):
-    users = graphene.List(User)
+    users = graphene.List(UserType)
 
     def resolve_users(self, info):
-        return UserModel.objects.all()
+        return User.objects.all()
 
 
 schema = graphene.Schema(query=Query)

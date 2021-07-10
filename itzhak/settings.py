@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "environ",
     "graphene_django",
     "pytest",
+    "mixer",
     "itzhak",
 ]
 

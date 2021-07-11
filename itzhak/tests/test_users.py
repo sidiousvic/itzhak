@@ -19,14 +19,39 @@ users_query = """
     }
 """
 
+user_query = """
+    query($id: ID) {
+        user(id: $id) {
+            id
+            email
+            firstName
+            lastName
+            balance
+          	currency
+        }
+    }
+"""
+
 
 @pytest.mark.django_db
 class TestUserSchema(TestCase):
     def setUp(self):
         self.client = Client(schema)
-        self.user = mixer.blend(User)
 
+    # get all users
     def test_users_query(self):
-        response = self.client.execute(users_query, variables={"id": self.user.id})
+        for idx in range(3):
+            mixer.blend(User)
+
+        response = self.client.execute(users_query)
         response_users = response.get("data").get("users")
-        assert len(response_users) == 1
+        ok = response.get("data").get("ok")
+        assert len(response_users) == 3
+
+    # get one user
+    def test_user_query(self):
+        test_user = mixer.blend(User)
+        response = self.client.execute(user_query, variables={"id": test_user.id})
+        response_user = response.get("data").get("user")
+        ok = response.get("data").get("ok")
+        assert response_user["id"] == str(test_user.id)

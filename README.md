@@ -2,7 +2,7 @@
 
 <h2>A humanitarian expense manager app.</h2>
 
-<h2>Setting up python##</h2>
+<h2>Setting up python</h2>
 <ul>
 <li>This project uses python 3.x</li>
 <li>For windows, visit the official download page at https://www.python.org/downloads/windows/ and choose either the 32 or 64 bit installer based on your architecture. Launch the executable and follow install instructions.</li>

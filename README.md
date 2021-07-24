@@ -27,7 +27,7 @@ Python provides its venv module for this. Install it via the command `python [op
 
 <h2>Using shell plus</h2>
 <ul>
-<li>Install shell plus which comes with django and allows importation of models created as well as running tests. Use "pip install django\-shell\-plus" to install shell plus.</li>
+<li>Install shell plus which comes with django and allows importation of models created as well as running tests. Use "pip install django-shell-plus" to install shell plus.</li>
 
 <li>Once installed use either `$ django-admin {command} [options]` `$ manage.py {command} [options]` `$ python -m django {command} [options]` to perform django tasks.</li>
 <li>For example you can create a file.json file to store data and then use " django admin file.json" to load the data in it as a fixture, that is as a serialized version of that database.</li>

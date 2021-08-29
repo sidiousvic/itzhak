@@ -8,7 +8,8 @@ from itzhak.io.schema import schema
 
 users_query = """
     query {
-        users {
+        users { 
+            # user query returns a User type
             id
             email
             firstName
@@ -22,6 +23,7 @@ users_query = """
 user_query = """
     query($id: ID) {
         user(id: $id) {
+            # user query returns a User type
             id
             email
             firstName
@@ -29,6 +31,19 @@ user_query = """
             balance
           	currency
         }
+    }
+"""
+
+delete_user_mutation = """
+    mutation($id: ID) {
+        deleteUser(id: $id) {
+            user {
+                id
+                lastName
+                firstName
+            }
+            message
+        }        
     }
 """
 
@@ -55,3 +70,13 @@ class TestUserSchema(TestCase):
         response_user = response.get("data").get("user")
         ok = response.get("data").get("ok")
         assert response_user["id"] == str(test_user.id)
+
+    # delete one user
+    def test_delete_user_mutation(self):
+        test_user = mixer.blend(User)
+        response = self.client.execute(
+            delete_user_mutation, variables={"id": test_user.id}
+        )
+        delete_user_mutation_response = response.get("data").get("deleteUser")
+        assert delete_user_mutation_response["message"] == "USER SUCCESSFULLY DELETED"
+        assert delete_user_mutation_response["user"]["id"] == str(test_user.id)

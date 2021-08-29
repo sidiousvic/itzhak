@@ -32,6 +32,8 @@ class DeleteUserMutation(graphene.Mutation):
 
     def mutate(root, info, id):
         user = User.objects.get(id=id)
+        # delete user here
+        # verify that the user was deleted
         message = "USER SUCCESSFULLY DELETED"
         return DeleteUserMutation(user, message)
 

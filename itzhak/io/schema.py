@@ -1,3 +1,6 @@
+import logging
+import copy
+
 from django.core.checks import messages
 from graphene.types import mutation
 from graphene.types.scalars import String
@@ -30,12 +33,21 @@ class DeleteUserMutation(graphene.Mutation):
     user = graphene.Field(UserType)
     message = graphene.String()
 
-    def mutate(root, info, id):
+    @classmethod
+    def mutate(cls, root, info, id):
         user = User.objects.get(id=id)
+
+        user_deleted=copy.deepcopy(user)
+
         # delete user here
+        user_deletion=user.delete()
         # verify that the user was deleted
-        message = "USER SUCCESSFULLY DELETED"
-        return DeleteUserMutation(user, message)
+        if user_deletion[1]:
+            message = "USER SUCCESSFULLY DELETED"
+            return DeleteUserMutation(user_deleted, message)
+        else:
+            message = "USER DELETION FAILED"
+            return DeleteUserMutation(user_deleted, message)
 
 
 class Mutation(graphene.ObjectType):

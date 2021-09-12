@@ -1,5 +1,6 @@
 import pytest
 from django.test import TestCase
+from graphql.error import GraphQLLocatedError
 from mixer.backend.django import mixer
 from graphene.test import Client
 
@@ -74,9 +75,30 @@ class TestUserSchema(TestCase):
     # delete one user
     def test_delete_user_mutation(self):
         test_user = mixer.blend(User)
+        # print(test_user.id)
         response = self.client.execute(
             delete_user_mutation, variables={"id": test_user.id}
         )
+
+        print(response)
         delete_user_mutation_response = response.get("data").get("deleteUser")
         assert delete_user_mutation_response["message"] == "USER SUCCESSFULLY DELETED"
         assert delete_user_mutation_response["user"]["id"] == str(test_user.id)
+
+    # from graphql.error.located_error import GraphQLLocatedError
+    def test_delete_user_mutation_fail(self):
+        non_existing_user_id = 1
+
+        response = self.client.execute(delete_user_mutation, variables={"id": non_existing_user_id})
+
+        print(response)
+
+        if response['errors']:
+            for error in response['errors']:
+                if error['message'] =='User matching query does not exist.':
+                    print('Please enter a valid user ID')
+
+            print(response['errors'])
+        else:
+            delete_user_mutation_response = response.get("data").get("deleteUser")
+            assert delete_user_mutation_response["message"] == "USER DELETION FAILED"

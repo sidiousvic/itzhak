@@ -6,7 +6,7 @@ from graphene.types import mutation
 from graphene.types.scalars import String
 from graphene_django import DjangoObjectType
 import graphene
-
+from graphql.error.located_error import GraphQLLocatedError
 from itzhak.data.models.user import User
 
 
@@ -35,19 +35,26 @@ class DeleteUserMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, id):
+        # try:
         user = User.objects.get(id=id)
+        # except GraphQLLocatedError as err:
+        #     print(err)
+        #     message = "USER DELETION FAILED AS NO SUCH USER EXISTS"
+        #     return DeleteUserMutation(graphene.Field(UserType,id=1), message)
 
-        user_deleted=copy.deepcopy(user)
+        user_deleted = copy.deepcopy(user)
 
         # delete user here
-        user_deletion=user.delete()
+        user_deletion = user.delete()
+        print(user_deletion)
         # verify that the user was deleted
         if user_deletion[1]:
             message = "USER SUCCESSFULLY DELETED"
             return DeleteUserMutation(user_deleted, message)
+        # try to test deletion for a non-existing user
         else:
             message = "USER DELETION FAILED"
-            return DeleteUserMutation(user_deleted, message)
+            return DeleteUserMutation(user, message)
 
 
 class Mutation(graphene.ObjectType):

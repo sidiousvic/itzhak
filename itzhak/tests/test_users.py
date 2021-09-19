@@ -1,11 +1,15 @@
+import json
+from json.encoder import JSONEncoder
+from django.db.models import query
 import pytest
-from django.test import TestCase
+from django.test import TestCase, client
 from graphql.error import GraphQLLocatedError
 from mixer.backend.django import mixer
 from graphene.test import Client
+import graphene
 
 from itzhak.data.models.user import User
-from itzhak.io.schema import schema
+from itzhak.io.schema import AddUserInputType, AddUserMutation, DeleteUserMutation, Query, UserType, schema
 
 users_query = """
     query {
@@ -45,6 +49,18 @@ delete_user_mutation = """
             }
             message
         }        
+    }
+"""
+
+
+add_user_mutation = """
+    mutation($input: AddUserInputType!) {
+        addUser(input: $input) {
+            user {
+                id
+            }
+            message
+        }
     }
 """
 
@@ -102,3 +118,29 @@ class TestUserSchema(TestCase):
         else:
             delete_user_mutation_response = response.get("data").get("deleteUser")
             assert delete_user_mutation_response["message"] == "USER DELETION FAILED"
+
+
+    def test_add_user_mutation(self):
+        # schema=graphene.Schema(types=[AddUserInputType])
+        # print(schema)
+        # test_user = mixer.blend(User)
+        # schema=graphene.Schema(query=Query, mutation=DeleteUserMutation)
+        # response=schema.execute(delete_user_mutation,variables={"id":test_user.id})
+
+        # sch
+        # my_schema=graphene.Schema(types=[AddUserInputType],mutation=AddUserMutation)
+
+        # self.client=Client(my_schema)
+        # print(response)
+        inputs=AddUserInputType()
+
+        inputs.email="papa@gmail.com"
+        inputs.first_name="Papa"
+        inputs.last_name="Jones"
+
+        response=self.client.execute(
+            add_user_mutation,
+            variables={"input":inputs}
+        )
+        assert response['message']== "user successfully added"
+        # print(response)
